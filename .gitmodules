@@ -10,3 +10,6 @@
 [submodule "ip/opfb-fir-cfg"]
 	path = ip/opfb-fir-cfg
 	url = https://github.com/MazinLab/opfb-fir-cfg
+[submodule "ip/ssrfft_16x4096"]
+	path = ip/ssrfft_16x4096
+	url = https://github.com/MazinLab/ssrfft_16x4096
