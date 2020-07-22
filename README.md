@@ -2,7 +2,7 @@
 
 This project makes use of git submodules to track individual IP block repositories. To clone the repository and initialize and update the submodules including nested submodules run the command:
 ```
-$ git clone --recurse-submodules <http://repo>
+$ git clone --recurse-submodules https://github.com/MazinLab/RFSoC_OPFB.git
 ```
 If you already cloned the repo you can accomplish the same thing by running:
 ```
