@@ -1,4 +1,5 @@
 opfb_proj/
+*.
 *.log
 *.jou
 *.str
