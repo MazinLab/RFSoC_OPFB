@@ -1,0 +1,12 @@
+[submodule "ip/adc-to-opfb"]
+	path = ip/adc-to-opfb
+	url = https://github.com/MazinLab/adc-to-opfb
+[submodule "ip/opfb-fir-to-fft"]
+	path = ip/opfb-fir-to-fft
+	url = https://github.com/MazinLab/opfb-fir-to-fft
+[submodule "ip/pkg-fft-output"]
+	path = ip/pkg-fft-output
+	url = https://github.com/MazinLab/pkg-fft-output.git
+[submodule "ip/opfb-fir-cfg"]
+	path = ip/opfb-fir-cfg
+	url = https://github.com/MazinLab/opfb-fir-cfg
