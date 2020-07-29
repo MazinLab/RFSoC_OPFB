@@ -1,5 +1,9 @@
 # 4096 Channel 2/1 Oversampled 4 GHz Polyphase Filterbank on the Xilinx RFSoC
 
+[Introduction](https://github.com/MazinLab/RFSoC_OPFB#introduction)
+[Project Structure](https://github.com/MazinLab/RFSoC_OPFB#project-structure)
+[Running the Project](https://github.com/MazinLab/RFSoC_OPFB#running-the-projec)[Downloading and Modifying the Project Source](https://github.com/MazinLab/RFSoC_OPFB#running-the-project)
+
 ## Introduction
 
 This project creates a polyphase channelizer capable of migrating 4 GHz of incoming RF bandwidth to 4096 1 MHz channels with 2/1 oversampling. The projects runs on the Xilinx ZCU111 and uses approximatly 20% of the chip. The design involves two custom blocks made using Vivado HLS. The remaining blocks can be found in the Xilinx blockset in Vivado Design Suite and System Generator versions 2019.1+. Data is generated and visualized in a Jupyter Notebook hosted on the embedded CPU before being sent to and from the channelizer via DMA using the PYNQ framework.
