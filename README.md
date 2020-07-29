@@ -37,7 +37,7 @@ pip install -e git+https://github.com/mazinlab/mkidgen3.git@develop#egg=mkidgen3
 pip install fpbinary
 ```
 ### FPGA Files
-The last thing needed to run the project on the board are the pre-compiled FPGA Files. Move `bd/opfb_tcl`, `bit/opfb_test.hwh`, and `bit/opfb_test.bit` to the same location on the board. The Jupyter Notebook `opfb_test.ipynb` must also be on the board. To acheive full functionality, transfer the `filter` directory as well. Note one of the more efficient ways to do this is to scp a compressed directory containing the files mentioned above.
+The last thing needed to run the project on the board are the pre-compiled FPGA Files. Move `bd/opfb_test.tcl`, `bit/opfb_test.hwh`, and `bit/opfb_test.bit` to the same location on the board. The Jupyter Notebook `opfb_test.ipynb` must also be on the board. To acheive full functionality, transfer the `filter` directory as well. Note one of the more efficient ways to do this is to scp a compressed directory containing the files mentioned above.
 
 ## Running the project
 Navigate to the board's Jupyter Notebook server. Run the `opfb_test.ipynb` notebook. Be sure to specify the correct path to the overlay files and the filter coefficient files.
