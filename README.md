@@ -7,15 +7,16 @@ This project creates a polyphase channelizer capable of migrating 4 GHz of incom
 ## Project Structure
 This project is built using Vivado Design Suite + Vivado HLS + System Generator version 2019.2.
 
-The `ip` directory contains repositories for all the ip modules used in the firmware.
-
 The `bd` directory contains block design .tcl scripts which can be sourced from within Vivado to rebuild the top level overlay design from which the bit stream is generated.
+
+The `bit` directoy contains the .bit and .hwh files used to program the FPGA.
+
+The `filter` directory contains the .coe files used to program the Xilinx filters.
+
+The `ip` directory contains repositories for all the ip modules used in the firmware.
 
 The `py` directory contains the jupyter notebook to run the project.
 
-The `filter` directory contains the .coe files used to program the Xilinx filters
-
-The `bit` directoy contains the .bit and .hwh files used to program the FPGA.
 ## Install and Requirements
 
 ### Hardware
@@ -28,10 +29,10 @@ pip install -e git+https://github.com/mazinlab/mkidgen3.git@develop#egg=mkidgen3
 pip install fpbinary
 ```
 ### FPGA Files
-The last thing needed to run the project on the board are the pre-compiled FPGA Files. Move `opfb_test.hwh`, `opfb_test.tcl`, and `opfb_test.bit` to the same location on the board. The Jupyter Notebook `opfb_test.ipynb` must also be on the board. To acheive full functionality, transfer the filter coefficient files as well. Note one of the more efficient ways to do this is to scp a compressed directory containing the files mentioned above.
+The last thing needed to run the project on the board are the pre-compiled FPGA Files. Move `bd/opfb_tcl`, `bit/opfb_test.hwh`, and `bit/opfb_test.bit` to the same location on the board. The Jupyter Notebook `opfb_test.ipynb` must also be on the board. To acheive full functionality, transfer the `filter` directory as well. Note one of the more efficient ways to do this is to scp a compressed directory containing the files mentioned above.
 
-### Running the project
-Navigate to the board's jupyter notebook server. Run the `opfb_test.ipynb` notebook. Be sure to specify the correct path to the overlay files and the filter coefficient files.
+## Running the project
+Navigate to the board's Jupyter Notebook server. Run the `opfb_test.ipynb` notebook. Be sure to specify the correct path to the overlay files and the filter coefficient files.
 
 ## Downloading and Modifying the Project Source
 
