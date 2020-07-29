@@ -1,8 +1,12 @@
 # 4096 Channel 2/1 Oversampled 4 GHz Polyphase Filterbank on the Xilinx RFSoC
 
 [Introduction](https://github.com/MazinLab/RFSoC_OPFB#introduction)
+
 [Project Structure](https://github.com/MazinLab/RFSoC_OPFB#project-structure)
-[Running the Project](https://github.com/MazinLab/RFSoC_OPFB#running-the-projec)[Downloading and Modifying the Project Source](https://github.com/MazinLab/RFSoC_OPFB#running-the-project)
+
+[Running the Project](https://github.com/MazinLab/RFSoC_OPFB#running-the-project)
+
+[Downloading and Modifying the Project Source](https://github.com/MazinLab/RFSoC_OPFB#running-the-project)
 
 ## Introduction
 
@@ -19,7 +23,7 @@ The `filter` directory contains the .coe files used to program the Xilinx filter
 
 The `ip` directory contains repositories for all the ip modules used in the firmware.
 
-The `py` directory contains the jupyter notebook to run the project.
+The `py` directory contains the Jupyter Notebook to run the project.
 
 ## Install and Requirements
 
