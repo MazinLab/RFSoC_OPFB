@@ -1,6 +1,6 @@
 
 ################################################################
-# This is a generated script based on design: opfb_debug_2
+# This is a generated script based on design: opfb_test
 #
 # Though there are limitations about the generated script,
 # the main purpose of this utility is to make learning
@@ -35,7 +35,7 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
 ################################################################
 
 # To test this script, run the following commands from Vivado Tcl console:
-# source opfb_debug_2_script.tcl
+# source opfb_test_script.tcl
 
 # If there is no project opened, this script will create a
 # project, but make sure you do not have an existing project
@@ -50,7 +50,7 @@ if { $list_projs eq "" } {
 
 # CHANGE DESIGN NAME HERE
 variable design_name
-set design_name opfb_debug_2
+set design_name opfb_test
 
 # If you do not already have an existing IP Integrator design open,
 # you can create a design using the following command:
@@ -115,6 +115,55 @@ common::send_msg_id "BD_TCL-005" "INFO" "Currently the variable <design_name> is
 if { $nRet != 0 } {
    catch {common::send_msg_id "BD_TCL-114" "ERROR" $errMsg}
    return $nRet
+}
+
+set bCheckIPsPassed 1
+##################################################################
+# CHECK IPs
+##################################################################
+set bCheckIPs 1
+if { $bCheckIPs == 1 } {
+   set list_check_ips "\ 
+xilinx.com:ip:axi_dma:7.1\
+xilinx.com:ip:axi_intc:4.1\
+xilinx.com:ip:smartconnect:1.0\
+xilinx.com:ip:axis_broadcaster:1.1\
+xilinx.com:ip:axis_data_fifo:2.0\
+xilinx.com:ip:clk_wiz:6.0\
+xilinx.com:ip:proc_sys_reset:5.0\
+xilinx.com:ip:system_ila:1.1\
+xilinx.com:ip:xlconcat:2.1\
+xilinx.com:ip:xlconstant:1.1\
+xilinx.com:ip:zynq_ultra_ps_e:3.3\
+MazinLab:mkidgen3:adc_to_opfb:1.0\
+xilinx.com:ip:axis_register_slice:1.1\
+MazinLab:mkidgen3:fir_to_fft:1.10\
+MazinLab:mkidgen3:pkg_fft_output:0.2\
+MazinLab:mkidgen3:ssrfft_16x4096_axis:1.0\
+xilinx.com:ip:fir_compiler:7.2\
+MazinLab:mkidgen3:opfb_fir_cfg:0.1\
+"
+
+   set list_ips_missing ""
+   common::send_msg_id "BD_TCL-006" "INFO" "Checking if the following IPs exist in the project's IP catalog: $list_check_ips ."
+
+   foreach ip_vlnv $list_check_ips {
+      set ip_obj [get_ipdefs -all $ip_vlnv]
+      if { $ip_obj eq "" } {
+         lappend list_ips_missing $ip_vlnv
+      }
+   }
+
+   if { $list_ips_missing ne "" } {
+      catch {common::send_msg_id "BD_TCL-115" "ERROR" "The following IPs are not found in the IP Catalog:\n  $list_ips_missing\n\nResolution: Please add the repository containing the IP(s) to the project." }
+      set bCheckIPsPassed 0
+   }
+
+}
+
+if { $bCheckIPsPassed != 1 } {
+  common::send_msg_id "BD_TCL-1003" "WARNING" "Will not continue with creation of design due to the error(s) above."
+  return 3
 }
 
 ##################################################################
@@ -255,7 +304,7 @@ proc create_hier_cell_filters { parentCell nameHier } {
    CONFIG.BestPrecision {true} \
    CONFIG.Clock_Frequency {300.0} \
    CONFIG.CoefficientSource {COE_File} \
-   CONFIG.Coefficient_File {../../../../../../../data/lane0.coe} \
+   CONFIG.Coefficient_File {../../../../../../../filter/lane0.coe} \
    CONFIG.Coefficient_Fractional_Bits {26} \
    CONFIG.Coefficient_Sets {256} \
    CONFIG.Coefficient_Sign {Signed} \
@@ -290,7 +339,7 @@ proc create_hier_cell_filters { parentCell nameHier } {
    CONFIG.Blank_Output {false} \
    CONFIG.Clock_Frequency {300.0} \
    CONFIG.CoefficientSource {COE_File} \
-   CONFIG.Coefficient_File {../../../../../../../data/lane1.coe} \
+   CONFIG.Coefficient_File {../../../../../../../filter/lane1.coe} \
    CONFIG.Coefficient_Fractional_Bits {26} \
    CONFIG.Coefficient_Sets {256} \
    CONFIG.Coefficient_Sign {Signed} \
@@ -326,7 +375,7 @@ proc create_hier_cell_filters { parentCell nameHier } {
    CONFIG.Blank_Output {false} \
    CONFIG.Clock_Frequency {300.0} \
    CONFIG.CoefficientSource {COE_File} \
-   CONFIG.Coefficient_File {../../../../../../../data/lane2.coe} \
+   CONFIG.Coefficient_File {../../../../../../../filter/lane2.coe} \
    CONFIG.Coefficient_Fractional_Bits {26} \
    CONFIG.Coefficient_Sets {256} \
    CONFIG.Coefficient_Sign {Signed} \
@@ -362,7 +411,7 @@ proc create_hier_cell_filters { parentCell nameHier } {
    CONFIG.Blank_Output {false} \
    CONFIG.Clock_Frequency {300.0} \
    CONFIG.CoefficientSource {COE_File} \
-   CONFIG.Coefficient_File {../../../../../../../data/lane3.coe} \
+   CONFIG.Coefficient_File {../../../../../../../filter/lane3.coe} \
    CONFIG.Coefficient_Fractional_Bits {26} \
    CONFIG.Coefficient_Sets {256} \
    CONFIG.Coefficient_Sign {Signed} \
@@ -398,7 +447,7 @@ proc create_hier_cell_filters { parentCell nameHier } {
    CONFIG.Blank_Output {false} \
    CONFIG.Clock_Frequency {300.0} \
    CONFIG.CoefficientSource {COE_File} \
-   CONFIG.Coefficient_File {../../../../../../../data/lane4.coe} \
+   CONFIG.Coefficient_File {../../../../../../../filter/lane4.coe} \
    CONFIG.Coefficient_Fractional_Bits {26} \
    CONFIG.Coefficient_Sets {256} \
    CONFIG.Coefficient_Sign {Signed} \
@@ -434,7 +483,7 @@ proc create_hier_cell_filters { parentCell nameHier } {
    CONFIG.Blank_Output {false} \
    CONFIG.Clock_Frequency {300.0} \
    CONFIG.CoefficientSource {COE_File} \
-   CONFIG.Coefficient_File {../../../../../../../data/lane5.coe} \
+   CONFIG.Coefficient_File {../../../../../../../filter/lane5.coe} \
    CONFIG.Coefficient_Fractional_Bits {26} \
    CONFIG.Coefficient_Sets {256} \
    CONFIG.Coefficient_Sign {Signed} \
@@ -470,7 +519,7 @@ proc create_hier_cell_filters { parentCell nameHier } {
    CONFIG.Blank_Output {false} \
    CONFIG.Clock_Frequency {300.0} \
    CONFIG.CoefficientSource {COE_File} \
-   CONFIG.Coefficient_File {../../../../../../../data/lane6.coe} \
+   CONFIG.Coefficient_File {../../../../../../../filter/lane6.coe} \
    CONFIG.Coefficient_Fractional_Bits {26} \
    CONFIG.Coefficient_Sets {256} \
    CONFIG.Coefficient_Sign {Signed} \
@@ -506,7 +555,7 @@ proc create_hier_cell_filters { parentCell nameHier } {
    CONFIG.Blank_Output {false} \
    CONFIG.Clock_Frequency {300.0} \
    CONFIG.CoefficientSource {COE_File} \
-   CONFIG.Coefficient_File {../../../../../../../data/lane7.coe} \
+   CONFIG.Coefficient_File {../../../../../../../filter/lane7.coe} \
    CONFIG.Coefficient_Fractional_Bits {26} \
    CONFIG.Coefficient_Sets {256} \
    CONFIG.Coefficient_Sign {Signed} \
@@ -542,7 +591,7 @@ proc create_hier_cell_filters { parentCell nameHier } {
    CONFIG.Blank_Output {false} \
    CONFIG.Clock_Frequency {300.0} \
    CONFIG.CoefficientSource {COE_File} \
-   CONFIG.Coefficient_File {../../../../../../../data/lane8.coe} \
+   CONFIG.Coefficient_File {../../../../../../../filter/lane8.coe} \
    CONFIG.Coefficient_Fractional_Bits {26} \
    CONFIG.Coefficient_Sets {256} \
    CONFIG.Coefficient_Sign {Signed} \
@@ -578,7 +627,7 @@ proc create_hier_cell_filters { parentCell nameHier } {
    CONFIG.Blank_Output {false} \
    CONFIG.Clock_Frequency {300.0} \
    CONFIG.CoefficientSource {COE_File} \
-   CONFIG.Coefficient_File {../../../../../../../data/lane9.coe} \
+   CONFIG.Coefficient_File {../../../../../../../filter/lane9.coe} \
    CONFIG.Coefficient_Fractional_Bits {26} \
    CONFIG.Coefficient_Sets {256} \
    CONFIG.Coefficient_Sign {Signed} \
@@ -614,7 +663,7 @@ proc create_hier_cell_filters { parentCell nameHier } {
    CONFIG.Blank_Output {false} \
    CONFIG.Clock_Frequency {300.0} \
    CONFIG.CoefficientSource {COE_File} \
-   CONFIG.Coefficient_File {../../../../../../../data/lane10.coe} \
+   CONFIG.Coefficient_File {../../../../../../../filter/lane10.coe} \
    CONFIG.Coefficient_Fractional_Bits {26} \
    CONFIG.Coefficient_Sets {256} \
    CONFIG.Coefficient_Sign {Signed} \
@@ -650,7 +699,7 @@ proc create_hier_cell_filters { parentCell nameHier } {
    CONFIG.Blank_Output {false} \
    CONFIG.Clock_Frequency {300.0} \
    CONFIG.CoefficientSource {COE_File} \
-   CONFIG.Coefficient_File {../../../../../../../data/lane11.coe} \
+   CONFIG.Coefficient_File {../../../../../../../filter/lane11.coe} \
    CONFIG.Coefficient_Fractional_Bits {26} \
    CONFIG.Coefficient_Sets {256} \
    CONFIG.Coefficient_Sign {Signed} \
@@ -686,7 +735,7 @@ proc create_hier_cell_filters { parentCell nameHier } {
    CONFIG.Blank_Output {false} \
    CONFIG.Clock_Frequency {300.0} \
    CONFIG.CoefficientSource {COE_File} \
-   CONFIG.Coefficient_File {../../../../../../../data/lane12.coe} \
+   CONFIG.Coefficient_File {../../../../../../../filter/lane12.coe} \
    CONFIG.Coefficient_Fractional_Bits {26} \
    CONFIG.Coefficient_Sets {256} \
    CONFIG.Coefficient_Sign {Signed} \
@@ -722,7 +771,7 @@ proc create_hier_cell_filters { parentCell nameHier } {
    CONFIG.Blank_Output {false} \
    CONFIG.Clock_Frequency {300.0} \
    CONFIG.CoefficientSource {COE_File} \
-   CONFIG.Coefficient_File {../../../../../../../data/lane13.coe} \
+   CONFIG.Coefficient_File {../../../../../../../filter/lane13.coe} \
    CONFIG.Coefficient_Fractional_Bits {26} \
    CONFIG.Coefficient_Sets {256} \
    CONFIG.Coefficient_Sign {Signed} \
@@ -758,7 +807,7 @@ proc create_hier_cell_filters { parentCell nameHier } {
    CONFIG.Blank_Output {false} \
    CONFIG.Clock_Frequency {300.0} \
    CONFIG.CoefficientSource {COE_File} \
-   CONFIG.Coefficient_File {../../../../../../../data/lane14.coe} \
+   CONFIG.Coefficient_File {../../../../../../../filter/lane14.coe} \
    CONFIG.Coefficient_Fractional_Bits {26} \
    CONFIG.Coefficient_Sets {256} \
    CONFIG.Coefficient_Sign {Signed} \
@@ -794,7 +843,7 @@ proc create_hier_cell_filters { parentCell nameHier } {
    CONFIG.Blank_Output {false} \
    CONFIG.Clock_Frequency {300.0} \
    CONFIG.CoefficientSource {COE_File} \
-   CONFIG.Coefficient_File {../../../../../../../data/lane15.coe} \
+   CONFIG.Coefficient_File {../../../../../../../filter/lane15.coe} \
    CONFIG.Coefficient_Fractional_Bits {26} \
    CONFIG.Coefficient_Sets {256} \
    CONFIG.Coefficient_Sign {Signed} \
@@ -1043,7 +1092,6 @@ proc create_hier_cell_opfb { parentCell nameHier } {
   connect_bd_intf_net -intf_net adc_to_opfb_0_lane_15 [get_bd_intf_pins adc_to_opfb_0/lane_15] [get_bd_intf_pins filters/S_AXIS_DATA15]
   connect_bd_intf_net -intf_net adc_to_opfb_0_lane_data_0 [get_bd_intf_pins adc_to_opfb_0/lane_0] [get_bd_intf_pins filters/S_AXIS_DATA]
   connect_bd_intf_net -intf_net [get_bd_intf_nets adc_to_opfb_0_lane_data_0] [get_bd_intf_pins lane_0] [get_bd_intf_pins filters/S_AXIS_DATA]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets adc_to_opfb_0_lane_data_0]
   connect_bd_intf_net -intf_net axis_register_slice_10_M_AXIS [get_bd_intf_pins axis_register_slice_10/M_AXIS] [get_bd_intf_pins fir_to_fft_0/input_10]
   connect_bd_intf_net -intf_net axis_register_slice_11_M_AXIS [get_bd_intf_pins axis_register_slice_11/M_AXIS] [get_bd_intf_pins fir_to_fft_0/input_11]
   connect_bd_intf_net -intf_net axis_register_slice_12_M_AXIS [get_bd_intf_pins axis_register_slice_12/M_AXIS] [get_bd_intf_pins fir_to_fft_0/input_12]
@@ -1055,11 +1103,9 @@ proc create_hier_cell_opfb { parentCell nameHier } {
   connect_bd_intf_net -intf_net axis_register_slice_18_M_AXIS [get_bd_intf_pins axis_register_slice_18/M_AXIS] [get_bd_intf_pins fir_to_fft_0/input_3]
   connect_bd_intf_net -intf_net axis_register_slice_1_M_AXIS [get_bd_intf_pins adc_to_opfb_0/istream_data] [get_bd_intf_pins axis_register_slice_1/M_AXIS]
   connect_bd_intf_net -intf_net [get_bd_intf_nets axis_register_slice_1_M_AXIS] [get_bd_intf_pins istream_data] [get_bd_intf_pins axis_register_slice_1/M_AXIS]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets axis_register_slice_1_M_AXIS]
   connect_bd_intf_net -intf_net axis_register_slice_2_M_AXIS [get_bd_intf_pins adc_to_opfb_0/qstream_data] [get_bd_intf_pins axis_register_slice_2/M_AXIS]
   connect_bd_intf_net -intf_net axis_register_slice_3_M_AXIS [get_bd_intf_pins axis_register_slice_3/M_AXIS] [get_bd_intf_pins fir_to_fft_0/input_0]
   connect_bd_intf_net -intf_net [get_bd_intf_nets axis_register_slice_3_M_AXIS] [get_bd_intf_pins M_AXIS] [get_bd_intf_pins axis_register_slice_3/M_AXIS]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets axis_register_slice_3_M_AXIS]
   connect_bd_intf_net -intf_net axis_register_slice_4_M_AXIS [get_bd_intf_pins axis_register_slice_4/M_AXIS] [get_bd_intf_pins fir_to_fft_0/input_4]
   connect_bd_intf_net -intf_net axis_register_slice_5_M_AXIS [get_bd_intf_pins axis_register_slice_5/M_AXIS] [get_bd_intf_pins fir_to_fft_0/input_5]
   connect_bd_intf_net -intf_net axis_register_slice_6_M_AXIS [get_bd_intf_pins axis_register_slice_6/M_AXIS] [get_bd_intf_pins fir_to_fft_0/input_6]
@@ -1068,7 +1114,6 @@ proc create_hier_cell_opfb { parentCell nameHier } {
   connect_bd_intf_net -intf_net axis_register_slice_9_M_AXIS [get_bd_intf_pins axis_register_slice_9/M_AXIS] [get_bd_intf_pins fir_to_fft_0/input_9]
   connect_bd_intf_net -intf_net fir_to_fft_0_output_0 [get_bd_intf_pins fir_to_fft_0/output_0] [get_bd_intf_pins ssrfft_16x4096_axis_0/iq_0]
   connect_bd_intf_net -intf_net [get_bd_intf_nets fir_to_fft_0_output_0] [get_bd_intf_pins output_0] [get_bd_intf_pins ssrfft_16x4096_axis_0/iq_0]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets fir_to_fft_0_output_0]
   connect_bd_intf_net -intf_net fir_to_fft_0_output_1 [get_bd_intf_pins fir_to_fft_0/output_1] [get_bd_intf_pins ssrfft_16x4096_axis_0/iq_1]
   connect_bd_intf_net -intf_net fir_to_fft_0_output_2 [get_bd_intf_pins fir_to_fft_0/output_2] [get_bd_intf_pins ssrfft_16x4096_axis_0/iq_2]
   connect_bd_intf_net -intf_net fir_to_fft_0_output_3 [get_bd_intf_pins fir_to_fft_0/output_3] [get_bd_intf_pins ssrfft_16x4096_axis_0/iq_3]
@@ -1247,7 +1292,7 @@ proc create_root_design { parentCell } {
   # Create instance: system_ila_0, and set properties
   set system_ila_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 system_ila_0 ]
   set_property -dict [ list \
-   CONFIG.C_BRAM_CNT {2.5} \
+   CONFIG.C_BRAM_CNT {0} \
    CONFIG.C_DATA_DEPTH {2048} \
    CONFIG.C_INPUT_PIPE_STAGES {3} \
    CONFIG.C_MON_TYPE {INTERFACE} \
