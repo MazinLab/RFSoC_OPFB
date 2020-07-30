@@ -54,3 +54,25 @@ $ git submodule update --init --recursive
 ```
 For more information on git submodules check out [the docs](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
 
+## Building the Project
+
+The top-level `Makefile` will rebuild the entire project by first regenerating the Vivado HLS IPs and then the Sysgen IP and finally synehtsizing and implementing the project in Vivado batch mode (as opposed to gui). The script requires you to have Vivado Design Suite 2019.2 including Vivado HLS 2019.2 and SystemGenerator R2019b with the proper paths set. To be sure your Vivado paths are configred correcly 
+```
+source <XILINX_PATH>/Vivado/2019.2/settings64.sh
+```
+The `sysgen` script called by the `Makefile` is located in the `<XILINX_PATH>/Vivado/2019.2/bin` directory and requires the MATLAB executable can be found in your Linux system's `$PATH` environment variable. See Vivado install guides for more information on downloading, installing, and configuring Vivado Design Suite and System Generator. Presuming the programs are installed and configured appropriatly, you can build the project with
+```
+cd /<path_to_RFSoC_OPFB>
+make
+```
+### HLS
+
+The HLS blocks can be modified by adapting the C++ source files in `ip/<HLS_Block_Name>/src` and the part number, synthesis stragety, and export style can be modified by adapting the HLS build script in `ip/<HLS_Block_Name>/script.tcl`. As is, the build script will create a project with the same name as the HLS Block and export the IP to `ip/<HLS_Block_Name>/<HLS_Block_Name>/solution1/impl/ip/`. The name and version of the exported IP can be changed from the default `MazinLab_mkidgen3_<HLS_Block_Name>_0_1` the build script. It's recommended to change at least the version to keep track of project history.
+
+### System Generator
+
+The SSR FFT can be modified by changing `ip/ssrfft_16x4096/matlab/ssrfft_16x4096_axis.slx`. The part number, clock speed, and export style can be modified by clicking on the System generator token in the `.slx`. In order to be sure Vivado can find the regenerated IP, set the 'target directory' field in the System generator token to `/<path_to_RFSoC_OPFB>/ip/ssrfft_16x4096`. The `Makefile` generates this IP by running the `ip/ssrfft_16x4096/matlab/auto_generate.m` script which opens `ssrfft_16x4096_axis.slx`, presses 'Generate', and closes the design without saving. This will result in the creation of the packaged IP in `ip/ssrfft_16x4096/ip/MazinLab_mkidgen3_ssrfft_16x4096_axis_v1_0.zip'. To manage multiple versions, update the version number in 'Settings' next to 'Compilation:' in the System Generator token or change the `.slx` file name (update `auto_generate.m` if using build script).
+
+### Vivado
+
+The `Makefile` sources `vivado/write_prj.tcl` which creates a vivado project `vivado/opfb_proj`, adds the `ip/` repository, sources the `bd/opfb_test.tcl` overlay block diagram, and generates the bitstream `opfb_test_wrapper.bit`. To test the overlay on the board you will need to transfer the block design which Vivado will export to something like `vivado/opfb_proj/opfb_proj.srcs/sources_1/bd/opfb_test/hw_handoff/opfb_test_bd.tcl', the hardware handoff file which can be found in something like `vivado/opfb_proj/opfb_proj.srcs/sources_1/bd/opfb_test/hw_handoff/opfb_test.hwh` and the bitstream which will be located in something like `vivado/opfb_proj/opfb_proj.runs/impl_1/opfb_test_wrapper.bit'.
