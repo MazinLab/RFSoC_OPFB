@@ -4,9 +4,11 @@
 
 [Project Structure](https://github.com/MazinLab/RFSoC_OPFB#project-structure)
 
+[Install and Requirements](https://github.com/MazinLab/RFSoC_OPFB#install-and-requirements)
+
 [Running the Project](https://github.com/MazinLab/RFSoC_OPFB#running-the-project)
 
-[Downloading the Project Source](https://github.com/MazinLab/RFSoC_OPFB#running-the-project)
+[Downloading the Project Source](https://github.com/MazinLab/RFSoC_OPFB#downloading-the-project-source)
 
 [Building the Project](https://github.com/MazinLab/RFSoC_OPFB#building-the-project)
 
