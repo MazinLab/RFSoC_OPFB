@@ -6,7 +6,9 @@
 
 [Running the Project](https://github.com/MazinLab/RFSoC_OPFB#running-the-project)
 
-[Downloading and Modifying the Project Source](https://github.com/MazinLab/RFSoC_OPFB#running-the-project)
+[Downloading the Project Source](https://github.com/MazinLab/RFSoC_OPFB#running-the-project)
+
+[Building the Project](https://github.com/MazinLab/RFSoC_OPFB#building-the-project)
 
 ## Introduction
 
@@ -42,7 +44,7 @@ The last thing needed to run the project on the board are the pre-compiled FPGA 
 ## Running the project
 Navigate to the board's Jupyter Notebook server. Run the `opfb_test.ipynb` notebook. Be sure to specify the correct path to the overlay files and the filter coefficient files in the notebook.
 
-## Downloading and Modifying the Project Source
+## Downloading the Project Source
 
 This project makes use of git submodules to track individual IP block repositories. To clone the repository and initialize and update the submodules including nested submodules run the command:
 ```
