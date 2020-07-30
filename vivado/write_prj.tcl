@@ -5,7 +5,7 @@
 set prj_dir "."
 set iprepo_dir $prj_dir/../ip
 
-set prj_name "opfb_prj"
+set prj_name "opfb_proj"
 set bd_name "opfb_test"
 
 create_project $prj_name $prj_dir/$prj_name -part xczu28dr-ffvg1517-2-e
@@ -19,8 +19,8 @@ make_wrapper -files [get_files $prj_dir/$prj_name/$prj_name.srcs/sources_1/bd/$b
 add_files -norecurse $prj_dir/$prj_name/$prj_name.srcs/sources_1/bd/$bd_name/hdl/${bd_name}_wrapper.v
 update_compile_order -fileset sources_1
 
-#launch_runs impl_1 -jobs 4 -to_step write_bitstream
-#wait_on_run impl_1
+launch_runs impl_1 -jobs 2 -to_step write_bitstream
+wait_on_run impl_1
 
 #file mkdir $prj_dir/overlay
 #file copy -force $prj_dir/$prj_name/$prj_name.runs/impl_1/${bd_name}_wrapper.bit $prj_dir/overlay/rfdc_snapshot.bit
