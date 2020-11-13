@@ -5,8 +5,8 @@
 set prj_dir "."
 set iprepo_dir $prj_dir/../ip
 
-set prj_name "opfb_proj"
-set bd_name "opfb_test"
+set prj_name "opfb_timing_opt"
+set bd_name "OPFB_TimingOpt"
 
 create_project $prj_name $prj_dir/$prj_name -part xczu28dr-ffvg1517-2-e
 set_property board_part xilinx.com:zcu111:part0:1.1 [current_project]
