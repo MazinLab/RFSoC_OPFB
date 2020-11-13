@@ -35,7 +35,7 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
 ################################################################
 
 # To test this script, run the following commands from Vivado Tcl console:
-# source no_slice_regs_before_firs_test_script.tcl
+# source OPFB_TimingOpt.tcl
 
 # If there is no project opened, this script will create a
 # project, but make sure you do not have an existing project
