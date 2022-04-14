@@ -65,7 +65,7 @@ You should see individual folders in `ip/` populated with their source files, bu
 
 ## Building the Project
 
-The top-level `Makefile` will rebuild the project and run synthesis and implementation in [Vivado](https://github.com/MazinLab/RFSoC_OPFB#vivado) batch mode (as opposed to gui). The script requires you to have Vivado Design Suite 2021.2 with the proper paths set. To be sure your Vivado paths are configred correcly, run
+The top-level `Makefile` will rebuild the project and run synthesis and implementation in Vivado batch mode. The script requires you to have Vivado Design Suite 2021.2 with the proper paths set. To be sure your Vivado paths are configred correcly, run
 ```
 source <XILINX_PATH>/Vivado/2021.2/settings64.sh
 ```
@@ -74,11 +74,3 @@ Presuming the programs are installed and configured appropriatly, you can build 
 cd /<path_to_RFSoC_OPFB>
 make
 ```
-### HLS
-
-The HLS blocks can be modified by adapting the C++ source files in `ip/<HLS_Block_Name>/src` and the part number, synthesis stragety, and export style can be modified by adapting the HLS build script in `ip/<HLS_Block_Name>/script.tcl`. As is, the build script will create a project with the same name as the HLS Block and export the IP to `ip/<HLS_Block_Name>/<HLS_Block_Name>/solution1/impl/ip/`. The name and version of the exported IP can be changed from the default `MazinLab_mkidgen3_<HLS_Block_Name>_0_1` in the build script. It is recommended to change at least the version to keep track of project history.
-
-### System Generator
-
-The SSR FFT can be modified by changing `ip/ssrfft_16x4096/matlab/ssrfft_16x4096_axis.slx`. The part number, clock speed, and export style can be modified by clicking on the System Generator token in the `.slx`. In order to be sure Vivado can find the regenerated IP, set the 'target directory' field in the System Generator token to `<path_to_RFSoC_OPFB>/ip/ssrfft_16x4096`. The `Makefile` generates this IP by running the `ip/ssrfft_16x4096/matlab/auto_generate.m` script which opens `ssrfft_16x4096_axis.slx`, presses 'Generate', and closes the design without saving. This will result in the creation of the packaged IP in `ip/ssrfft_16x4096/ip`. To manage multiple versions, update the version number in 'Settings' next to 'Compilation' in the System Generator token or change the `.slx` file name (also update `auto_generate.m` if using the build script).
-
