@@ -6,7 +6,7 @@ set prj_dir "."
 set iprepo_dir $prj_dir/../ip
 
 set prj_name "opfb_dma_test"
-set bd_name "OPFB_DMA_Test"
+set bd_name "opfb_dma_test"
 
 # create project
 create_project $prj_name $prj_dir/$prj_name -part xczu28dr-ffvg1517-2-e
