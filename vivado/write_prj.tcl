@@ -21,8 +21,12 @@ set_property target_language Verilog [current_project]
 update_ip_catalog
 
 source $prj_dir/../bd/$bd_name.tcl
-make_wrapper -files [get_files $prj_dir/$prj_name/$prj_name.srcs/sources_1/bd/$bd_name/$bd_name.bd] -top
-add_files -norecurse $prj_dir/$prj_name/$prj_name.srcs/sources_1/bd/$bd_name/hdl/${bd_name}_wrapper.v
+
+
+
+# Generate HDL Wrapper
+make_wrapper -files [get_files ${prj_dir}/${prj_name}/${prj_name}.srcs/sources_1/bd/${bd_name}/${bd_name}.bd] -top
+add_files -norecurse ${prj_dir}/${prj_name}/${prj_name}.srcs/sources_1/bd/${bd_name}/hdl/${bd_name}_wrapper.v
 update_compile_order -fileset sources_1
 
 # Change Synth and Imp Settings to improve timing performance

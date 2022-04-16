@@ -50,7 +50,7 @@ if { $list_projs eq "" } {
 
 # CHANGE DESIGN NAME HERE
 variable design_name
-set design_name OPFB_DMA_Test
+set design_name opfb_dma_test
 
 # If you do not already have an existing IP Integrator design open,
 # you can create a design using the following command:
