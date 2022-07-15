@@ -13,3 +13,24 @@
 [submodule "ip/ssrfft_16x4096"]
 	path = ip/ssrfft_16x4096
 	url = https://github.com/MazinLab/ssrfft_16x4096
+[submodule "dac-replay"]
+	path = dac-replay
+	url = https://github.com/MazinLab/dac-replay.git
+[submodule "iq-capture"]
+	path = iq-capture
+	url = https://github.com/MazinLab/iq-capture.git
+[submodule "ip/wb2axip"]
+	path = ip/wb2axip
+	url = https://github.com/MazinLab/wb2axip.git
+[submodule "ip/iq-capture"]
+	path = ip/iq-capture
+	url = https://github.com/MazinLab/iq-capture.git
+[submodule "ip/dac-replay"]
+	path = ip/dac-replay
+	url = https://github.com/MazinLab/dac-replay.git
+[submodule "ip/opfb-bin-to-res"]
+	path = ip/opfb-bin-to-res
+	url = https://github.com/MazinLab/opfb-bin-to-res.git
+[submodule "ip/capture-upsizer"]
+	path = ip/capture-upsizer
+	url = https://github.com/MazinLab/capture-upsizer.git

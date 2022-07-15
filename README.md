@@ -13,70 +13,68 @@
 [Building the Project](https://github.com/MazinLab/RFSoC_OPFB#building-the-project)
 
 ## Introduction
+This project creates a polyphase channelizer capable of migrating 4 GHz of incoming RF bandwidth to 4096, 1 MHz channels with 2/1 oversampling. The project runs on the Xilinx ZCU111 and uses approximately 20% of the chip. The OPFB block was first verified using synthetic data fed through the core using a DMA engine transferring individual packets of data. That project is tagged as [512 MHz OPFB Initial Release](https://github.com/MazinLab/RFSoC_OPFB/releases/tag/v1.0) and is associated with [this paper](https://ieeexplore.ieee.org/document/9336352).
 
-This project creates a polyphase channelizer capable of migrating 4 GHz of incoming RF bandwidth to 4096, 1 MHz channels with 2/1 oversampling. The projects runs on the Xilinx ZCU111 and uses approximatly 20% of the chip. The design involves two custom blocks made using Vivado HLS 2019.2 and one block exported from System Generator version 2019.2. The remaining blocks can be found in the Xilinx blockset in Vivado Design Suite 2019.2. Data is generated and visualized in a Jupyter Notebook hosted on the embedded CPU before being sent to and from the channelizer via DMA using the PYNQ framework. The OPFB including the algorithm, resource utilization, and more is described in the associated paper available [here](https://ieeexplore.ieee.org/document/9336352).
+This project version demonstrates the OPFB operating in streaming mode and uses the integrated RF Data converter to generate and sample the data in hardware loopback. The OPFB block is the same except the filter is now 4 taps per branch instead of 8 which halves the core LUTRAM utilization. The design involves multiple blocks made using Vitis HLS 2020.1 and one block exported from System Generator version 2019.2. The remaining blocks can be found in the Xilinx blockset in Vivado Design Suite 2021.2. Data is generated in a Jupyter Notebook hosted on the embedded CPU before being written to device URAM as a waveform look-up-table. Two RFSoC DACs output the waveform which is then sampled by two RFSoC ADCs (all running at 4.096 GSPS). The data freely streams through the OPFB channelizer. At the user's request, the output channels are captured to the PL DDR4 and visualized in a Jupyter Notebook using the PYNQ framework.
+
+## What is an OPFB?
+If you're wondering what an OPFB is, how it works, or why you should use it, I suggest looking through the materials in the `learning` directory. `Polyphase_Explanation.pdf` is a summary note I made to document key takeaways and figures and includes an explanation of the differences between Polyphase Filter Banks (PFBs) and Oversampled Polyphase Filter Banks (OPFBs). This note is largly based off of work done by Fred Harris. `OPFB_Learning.ipynb` is an interactive Jupyter Notebook capable of arbitrary oversampling, channel-size, etc. and includes cells demonstrating how the filter is designed and characterized. For more information on how to efficiently implement an OPFB on an FPGA, please read [the paper](https://ieeexplore.ieee.org/document/9336352).
 
 ## Project Structure
-This project is built using Vivado Design Suite + Vivado HLS + System Generator versions 2019.2.
+This project is built using Vivado Design Suite 2021.2 + Vitis HLS 2020.1 + System Generator 2019.2.
 
-The `bd` directory contains block design `.tcl` scripts which can be sourced from within Vivado to rebuild the top level overlay design from which the bit stream is generated.
+The `bd` directory contains block design `.tcl` script which can be sourced from within Vivado to rebuild the top level overlay design from which the bit stream is generated.
 
 The `bit` directoy contains the `.bit` and `.hwh` files used to program the FPGA.
 
 The `filter` directory contains the `.coe` files used to program the Xilinx filters.
 
-The `ip` directory contains repositories for all the custom ip modules used in the firmware.
+The `ip` directory contains repositories for all the custom ip modules used in the firmware including the source files and exported IP.
 
 The `py` directory contains the Jupyter Notebook to run the project on the board.
 
 ## Install and Requirements
 
 ### Hardware
-You will need a ZCU111 with a [PYNQ image](http://www.pynq.io/board.html) (this project was tested using v2.5) see the [PYNQ Docs](https://pynq.readthedocs.io/en/v2.5.1/) for download and setup information.
+You will need a ZCU111 with a [PYNQ image](https://github.com/Xilinx/ZCU111-PYNQ/releases) (this project was tested using v2.7) see the [PYNQ Docs](https://pynq.readthedocs.io/en/v2.7.0/getting_started.html#zynq-zynq-ultrascale-and-zynq-rfsoc) for download and setup information.
 
 ### Software
-The Jupyter Notebok relies on functions specified in the [MKIDGen3](https://github.com/MazinLab/MKIDGen3/tree/master) and [FPBinary](https://github.com/smlgit/fpbinary) repositories. To install these on the board, first be sure the board is running PYNQ and is connected to the internet then run
+The Jupyter Notebok relies on functions specified in the [MKIDGen3](https://github.com/MazinLab/MKIDGen3) repository. To install it on the board, first be sure the board is running PYNQ and is connected to the internet then run
 ```
-$ pip install -e git+https://github.com/mazinlab/mkidgen3.git@develop#egg=mkidgen3
-$ pip install fpbinary
+cd ~
+mkdir ~/src
+git clone https://github/com/mazinlab/mkidgen3.git ~/src/
+cd ~/src/mkidgen3
+git checkout develop
+sudo pip3 install -e ~/src/mkidgen3
 ```
+*Note this project was tested with [MKIDGen3](https://github.com/MazinLab/MKIDGen3) commit hash [8040a0a](https://github.com/MazinLab/MKIDGen3/commit/8040a0a199fce029f0f15dd5c810257b4c19ed6a).*
 ### FPGA Files
-The last thing needed to run the project on the board are the pre-compiled FPGA Files. Move `bd/opfb_test.tcl`, `bit/opfb_test.hwh`, and `bit/opfb_test.bit` to the same location on the board. The Jupyter Notebook `opfb_test.ipynb` must also be on the board. To acheive full notebook functionality, transfer the `filter` directory over as well. Note one of the more efficient ways to do this is to transfer a compressed directory containing the files mentioned above.
+The last thing needed to run the project on the board are the pre-compiled FPGA Files. Move `bit/opfb_streaming.hwh`,`bit/opfb_streaming.bit`, and the Jupyter Notebook `py/opfb_demo.ipynb` to the same location on the board.
 
 ## Running the Project
-Navigate to the board's Jupyter Notebook server. Run the `opfb_test.ipynb` notebook. Be sure to specify the correct path to the overlay files and the filter coefficient files in the notebook.
+Navigate to the board's Jupyter Notebook server. Run the `opfb_demo.ipynb` notebook.
 
 ## Downloading the Project Source
 
 This project makes use of git submodules to track individual IP block repositories. To clone the repository and initialize and update the submodules including nested submodules run the command:
 ```
-$ git clone --recurse-submodules https://github.com/MazinLab/RFSoC_OPFB.git
+git clone --recurse-submodules https://github.com/MazinLab/RFSoC_OPFB.git
 ```
 If you already cloned the repo you can accomplish the same thing by running:
 ```
-$ git submodule update --init --recursive
+git submodule update --init --recursive
 ```
 You should see individual folders in `ip/` populated with their source files, build scripts, etc. For more information on git submodules check out [the docs](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
 
 ## Building the Project
 
-The top-level `Makefile` will rebuild the entire project by first regenerating the [Vivado HLS](https://github.com/MazinLab/RFSoC_OPFB#hls) IPs and then the [Sysgen](https://github.com/MazinLab/RFSoC_OPFB#system-generator) IP and finally synthesizing and implementing the project in [Vivado](https://github.com/MazinLab/RFSoC_OPFB#vivado) batch mode (as opposed to gui). The script requires you to have Vivado Design Suite (2019.2) including Vivado HLS (2019.2) and SystemGenerator (2019.2/MATLAB R2019b) with the proper paths set. To be sure your Vivado paths are configred correcly, run
+The top-level `Makefile` will rebuild the project and run synthesis and implementation in Vivado batch mode. The script requires you to have Vivado Design Suite 2021.2 with the proper paths set. To be sure your Vivado paths are configred correcly, run
 ```
-$ source <XILINX_PATH>/Vivado/2019.2/settings64.sh
+source <XILINX_PATH>/Vivado/2021.2/settings64.sh
 ```
-The `sysgen` script called by the `Makefile` is located in the `<XILINX_PATH>/Vivado/2019.2/bin` directory and requires the MATLAB executable can be found in your Linux system's `$PATH` environment variable. See Vivado install guides for more information on downloading, installing, and configuring Vivado Design Suite and System Generator. Presuming the programs are installed and configured appropriatly, you can build the project with
+Presuming the programs are installed and configured appropriatly, you can build the project with
 ```
-$ cd /<path_to_RFSoC_OPFB>
-$ make
+cd /<path_to_RFSoC_OPFB>
+make
 ```
-### HLS
-
-The HLS blocks can be modified by adapting the C++ source files in `ip/<HLS_Block_Name>/src` and the part number, synthesis stragety, and export style can be modified by adapting the HLS build script in `ip/<HLS_Block_Name>/script.tcl`. As is, the build script will create a project with the same name as the HLS Block and export the IP to `ip/<HLS_Block_Name>/<HLS_Block_Name>/solution1/impl/ip/`. The name and version of the exported IP can be changed from the default `MazinLab_mkidgen3_<HLS_Block_Name>_0_1` in the build script. It is recommended to change at least the version to keep track of project history.
-
-### System Generator
-
-The SSR FFT can be modified by changing `ip/ssrfft_16x4096/matlab/ssrfft_16x4096_axis.slx`. The part number, clock speed, and export style can be modified by clicking on the System Generator token in the `.slx`. In order to be sure Vivado can find the regenerated IP, set the 'target directory' field in the System Generator token to `<path_to_RFSoC_OPFB>/ip/ssrfft_16x4096`. The `Makefile` generates this IP by running the `ip/ssrfft_16x4096/matlab/auto_generate.m` script which opens `ssrfft_16x4096_axis.slx`, presses 'Generate', and closes the design without saving. This will result in the creation of the packaged IP in `ip/ssrfft_16x4096/ip`. To manage multiple versions, update the version number in 'Settings' next to 'Compilation' in the System Generator token or change the `.slx` file name (also update `auto_generate.m` if using the build script).
-
-### Vivado
-
-The `Makefile` sources `vivado/write_prj.tcl` which creates a vivado project `vivado/opfb_proj`, adds the `ip/` repository, sources the `bd/opfb_test.tcl` overlay block diagram, and generates the bitstream `opfb_test_wrapper.bit`. To test the rebuilt overlay on the board you will need to transfer the block design which Vivado will export to something like `vivado/opfb_proj/opfb_proj.srcs/sources_1/bd/opfb_test/hw_handoff/opfb_test_bd.tcl`, the hardware handoff file which can be found in something like `vivado/opfb_proj/opfb_proj.srcs/sources_1/bd/opfb_test/hw_handoff/opfb_test.hwh` and the bitstream which will be located in something like `vivado/opfb_proj/opfb_proj.runs/impl_1/opfb_test_wrapper.bit`.
