@@ -14,10 +14,10 @@
 
 ## Introduction
 
-This project creates a polyphase channelizer capable of migrating 4 GHz of incoming RF bandwidth to 4096, 1 MHz channels with 2/1 oversampling. The projects runs on the Xilinx ZCU111 and uses approximatly 20% of the chip. The design involves two custom blocks made using Vivado HLS 2019.2 and one block exported from System Generator version 2019.2. The remaining blocks can be found in the Xilinx blockset in Vivado Design Suite 2021.2. Data is generated and visualized in a Jupyter Notebook hosted on the embedded CPU before being sent to and from the channelizer via DMA using the PYNQ framework.
+This project creates a polyphase channelizer capable of migrating 4 GHz of incoming RF bandwidth to 4096, 1 MHz channels with 2/1 oversampling. The projects runs on the Xilinx ZCU111 and uses approximatly 20% of the chip. The original OPFB block was tested using synthetic data fed through the core using a DMA engine transfering individual packets of data. That project is tagged as [512 MHz OPFB Initial Release](https://github.com/MazinLab/RFSoC_OPFB/releases/tag/v1.0) and is associated with [this paper](https://ieeexplore.ieee.org/document/9336352). The OPFB was intended to injest data streaming from 2, 4 GSPS ADCs. This version has been upgraded to used the integrated RF Data converter to generate and sample the data in hardware loopback. The OPFB block is the same except the filter is now 4 taps per branch instead of 8 which halves the core LUTRAM utilization. The design involves multiple blocks made using Vitis HLS 2020.1 and one block exported from System Generator version 2019.2. The remaining blocks can be found in the Xilinx blockset in Vivado Design Suite 2021.2. Data is generated in a Jupyter Notebook hosted on the embedded CPU before being written to device URAM as a waveform look-up-table. Two RFSoC DACs output the waveform which is then sampled by two RFSoC ADCs (all running at 4.096 GSPS). The data freely streams through the OPFB channelizer. At the user's request, the output channels are captured to the PL DDR4 and visualized in a Jupyter Notebook using the PYNQ framework.
 
 ## Project Structure
-This project is built using Vivado Design Suite 2021.2 + Vivado HLS 2019.2 + System Generator 2019.2.
+This project is built using Vivado Design Suite 2021.2 + Vitis HLS 2020.1 + System Generator 2019.2.
 
 The `bd` directory contains block design `.tcl` script which can be sourced from within Vivado to rebuild the top level overlay design from which the bit stream is generated.
 
@@ -43,8 +43,8 @@ git clone https://github/com/mazinlab/mkidgen3.git ~/src/
 cd ~/src/mkidgen3
 git checkout develop
 sudo pip3 install -e ~/src/mkidgen3
-sudo pip3 install fpbinary
 ```
+*Note this project was tested with [MKIDGen3](https://github.com/MazinLab/MKIDGen3) commit hash [8040a0a](https://github.com/MazinLab/MKIDGen3/commit/8040a0a199fce029f0f15dd5c810257b4c19ed6a).*
 ### FPGA Files
 The last thing needed to run the project on the board are the pre-compiled FPGA Files. Move `bit/opfb_streaming.hwh`,`bit/opfb_streaming.bit`, and the Jupyter Notebook `py/opfb_demo.ipynb` to the same location on the board.
 
