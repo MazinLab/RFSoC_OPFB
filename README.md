@@ -35,7 +35,7 @@ The `py` directory contains the Jupyter Notebook to run the project on the board
 You will need a ZCU111 with a [PYNQ image](https://github.com/Xilinx/ZCU111-PYNQ/releases) (this project was tested using v2.7) see the [PYNQ Docs](https://pynq.readthedocs.io/en/v2.7.0/getting_started.html#zynq-zynq-ultrascale-and-zynq-rfsoc) for download and setup information.
 
 ### Software
-The Jupyter Notebok relies on functions specified in the [MKIDGen3](https://github.com/MazinLab/MKIDGen3) and [FPBinary](https://github.com/smlgit/fpbinary) repositories. To install these on the board, first be sure the board is running PYNQ and is connected to the internet then run
+The Jupyter Notebok relies on functions specified in the [MKIDGen3](https://github.com/MazinLab/MKIDGen3) repository. To install it on the board, first be sure the board is running PYNQ and is connected to the internet then run
 ```
 cd ~
 mkdir ~/src
@@ -46,10 +46,10 @@ sudo pip3 install -e ~/src/mkidgen3
 sudo pip3 install fpbinary
 ```
 ### FPGA Files
-The last thing needed to run the project on the board are the pre-compiled FPGA Files. Move `bit/opfb_dma_test.hwh`,`bit/opfb_dma_test.bit`, and the Jupyter Notebook `py/opfb_dma_test.ipynb` to the same location on the board.
+The last thing needed to run the project on the board are the pre-compiled FPGA Files. Move `bit/opfb_streaming.hwh`,`bit/opfb_streaming.bit`, and the Jupyter Notebook `py/opfb_demo.ipynb` to the same location on the board.
 
 ## Running the Project
-Navigate to the board's Jupyter Notebook server. Run the `opfb_dma_test.ipynb` notebook.
+Navigate to the board's Jupyter Notebook server. Run the `opfb_demo.ipynb` notebook.
 
 ## Downloading the Project Source
 
