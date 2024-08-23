@@ -1,19 +1,20 @@
- # Vivado 2021.2
+# Vivado 2022.1
 
 # OPFB Project
 
 set prj_dir "."
 set ip_repo $prj_dir/../ip
 
-set prj_name "opfb_streaming_test"
+set prj_name "opfb_streaming_prj"
 set bd_name "opfb_streaming"
 
 # create project
-create_project $prj_name $prj_dir/$prj_name -part xczu28dr-ffvg1517-2-e
+create_project $prj_name $prj_dir/$prj_name -part xczu48dr-ffvg1517-2-e
 
 # Set project properties
 set obj [current_project]
-set_property -name "board_part" -value "xilinx.com:zcu111:part0:1.2" -objects $obj
+set_property -name "board_part_repo_paths" -value "[file normalize "$prj_dir/../board_files"]" -objects $obj
+set_property -name "board_part" -value "realdigital.org:rfsoc4x2:part0:1.0" -objects $obj
 
 # Set IP repository paths
 set obj [get_filesets sources_1]
@@ -34,7 +35,10 @@ add_files -norecurse -fileset $obj $files
 
 source $prj_dir/../bd/$bd_name.tcl
 
-# Generate HDL Wrapper
+# Add Constraints
+add_files -fileset constrs_1 $prj_dir/constraints/
+
+## Generate HDL Wrapper
 make_wrapper -files [get_files ${prj_dir}/${prj_name}/${prj_name}.srcs/sources_1/bd/${bd_name}/${bd_name}.bd] -top
 add_files -norecurse ${prj_dir}/${prj_name}/${prj_name}.srcs/sources_1/bd/${bd_name}/hdl/${bd_name}_wrapper.v
 update_compile_order -fileset sources_1
