@@ -52,7 +52,7 @@ cd ~/src/mkidgen3
 git checkout develop
 sudo pip3 install -e ~/src/mkidgen3
 ```
-*Note this project was tested with [MKIDGen3](https://github.com/MazinLab/MKIDGen3) commit hash [8040a0a](https://github.com/MazinLab/MKIDGen3/commit/8040a0a199fce029f0f15dd5c810257b4c19ed6a).*
+*Note this project was tested with [MKIDGen3](https://github.com/MazinLab/MKIDGen3) commit hash [b3e3f67](https://github.com/MazinLab/MKIDGen3/commit/b3e3f67afeb82438da0d62bd15058b9d50bc59fa).*
 ### FPGA Files
 The last thing needed to run the project on the board are the pre-compiled FPGA Files. Move `bit/opfb_streaming.hwh`,`bit/opfb_streaming.bit`, and the Jupyter Notebook `py/opfb_demo.ipynb` to the same location on the board.
 
@@ -73,12 +73,27 @@ You should see individual folders in `ip/` populated with their source files, bu
 
 ## Building the Project
 
-The top-level `Makefile` will rebuild the project and run synthesis and implementation in Vivado batch mode. The script requires you to have Vivado Design Suite 2021.2 with the proper paths set. To be sure your Vivado paths are configred correcly, run
+The top-level `Makefile` will rebuild the project and run synthesis and implementation in Vivado batch mode. The script requires you to have Vivado Design Suite 2022.1 with the proper paths set. To be sure your Vivado paths are configred correcly, run
 ```
-source <XILINX_PATH>/Vivado/2021.2/settings64.sh
+source <XILINX_PATH>/Vivado/2022.1/settings64.sh
 ```
 Presuming the programs are installed and configured appropriatly, you can build the project with
 ```
 cd /<path_to_RFSoC_OPFB>
 make
+```
+To just build the block design, first be sure you have the RFSoC4x2 board files
+```
+cd /<path_to_RFSoC_OPFB>
+make board_files
+```
+Then run 
+```
+cd /<path_to_RFSoC_OPFB>
+make vivado_prj
+```
+If you want to build the bitstream from the command line after these steps, run
+```
+cd /<path_to_RFSoC_OPFB>
+make bitstream
 ```
