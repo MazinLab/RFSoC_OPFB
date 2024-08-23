@@ -1,4 +1,5 @@
 opfb_streaming_test/
+board_files/
 *.
 *.log
 *.jou
