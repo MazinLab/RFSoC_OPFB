@@ -97,3 +97,21 @@ If you want to build the bitstream from the command line after these steps, run
 cd /<path_to_RFSoC_OPFB>
 make bitstream
 ```
+
+### *Note 08/23/24: Default branch had been moved from `master` to `main`. To fix your local repo, run the following:*
+1. Checkout master branch
+```
+git checkout master
+```
+2. Rename local master branch to main
+```
+git branch -m master main
+```
+3. Set newly named local main to track remote main
+```
+git branch -u origin/main
+```
+4. Pull latest main updates
+```
+git pull
+```
