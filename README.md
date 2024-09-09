@@ -50,7 +50,8 @@ git checkout 8040a0a
 sudo pip3 install -e ~/src/mkidgen3
 ```
 *Note this project was tested with [MKIDGen3](https://github.com/MazinLab/MKIDGen3) commit hash [8040a0a](https://github.com/MazinLab/MKIDGen3/commit/8040a0a199fce029f0f15dd5c810257b4c19ed6a).*
-** If running on the ZCU111, PLEASE BE SURE TO USE THE CORRECT MKIDGen3 commit hash. The project has since retargeted the RFSoC4x2 board and current MKIDGen3 develop branch HEAD may not be safe to run on the ZCU111.**
+
+*** If running on the ZCU111, please be sure to use the correct MKIDGen3 commit hash stated above. The project has since retargeted the RFSoC4x2 board and the latest MKIDGen3 develop branch commit may not be safe to run on the ZCU111.***
 
 ### FPGA Files
 The last thing needed to run the project on the board are the pre-compiled FPGA Files. Move `bit/opfb_streaming.hwh`,`bit/opfb_streaming.bit`, and the Jupyter Notebook `py/opfb_demo.ipynb` to the same location on the board.
